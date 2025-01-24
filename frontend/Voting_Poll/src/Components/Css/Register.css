@@ -1,0 +1,116 @@
+/* General styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6;
+  }
+  
+  /* Container styling */
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f3f4f6;
+  }
+  
+  /* Card styling */
+  .card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 24rem;
+  }
+  
+  /* Heading styling */
+  .card h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333333;
+  }
+  
+  /* Form input styling */
+  .card form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card label {
+    font-size: 0.875rem;
+    color: #555555;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card input {
+    padding: 0.5rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+  
+  .card input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 4px rgba(37, 99, 235, 0.5);
+  }
+  
+  /* Button styling */
+  .card button {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .card button:hover {
+    opacity: 0.9;
+  }
+  
+  .card button:active {
+    transform: scale(0.98);
+  }
+  
+  /* Login button */
+  .card button[type="submit"] {
+    background-color: #2563eb;
+  }
+  
+  .card button[type="submit"]:hover {
+    background-color: #1e4bb8;
+  }
+  
+  /* Signup button */
+  .card button.signup {
+    background-color: #10b981;
+  }
+  
+  .card button.signup:hover {
+    background-color: #0d9c6e;
+  }
+  
+  /* Links */
+  .card .links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  
+  .card .links button {
+    background: none;
+    border: none;
+    color: #2563eb;
+    cursor: pointer;
+    font-size: 0.875rem;
+    text-decoration: underline;
+  }
+  
+  .card .links button:hover {
+    color: #1e4bb8;
+  }
+  
