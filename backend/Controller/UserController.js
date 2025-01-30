@@ -50,33 +50,41 @@ export const Login = async (req, res) => {
 
         // Validate input
         if (!email || !password) {
-            return res.status(400).json({ message: 'Email and password are required.' });
+            return res.status(400).json({ success: false, message: 'Email and password are required.' });
         }
 
         // Find the user
         const user = await UserModel.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: 'Invalid email or password.' });
+            return res.status(400).json({ success: false, message: 'Invalid email or password.' });
         }
 
-        // Compare passwords
+        // Compare password
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(400).json({ message: 'Invalid email or password.' });
+            return res.status(400).json({ success: false, message: 'Invalid email or password.' });
         }
 
         // Generate JWT
         const token = jwt.sign(
             { id: user._id, email: user.email },
             process.env.JWT_SECRET,
-            { expiresIn: '1d' }
+            { expiresIn: '1d' } // Token expires in 1 day
         );
 
-        res.status(200).json({ message: 'Login successful!', token });
+        // Send token as HTTP-only cookie for security
+        res.cookie("token", token, {
+            httpOnly: true, // Prevents JavaScript access (XSS protection)
+            secure: process.env.NODE_ENV === "production", // Only HTTPS in production
+            sameSite: "Strict", // CSRF protection
+        });
+
+        res.status(200).json({ success: true, message: 'Login successful!', token });
     } catch (error) {
-        res.status(500).json({ message: 'Error during login', error: error.message });
+        console.error("Login Error:", error.message);
+        res.status(500).json({ success: false, message: 'Error during login', error: error.message });
     }
-}
+};
 
 export const Logout = (req, res) => {
     res

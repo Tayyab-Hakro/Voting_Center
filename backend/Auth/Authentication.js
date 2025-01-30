@@ -1,17 +1,48 @@
-import jwt from 'jsonwebtoken'
-const IsAuthentication =async (req , res , next) =>{
-    const token = req.headers
+import jwt from 'jsonwebtoken';
 
-    if(!token){
-        res.return(401).json({success : false , message:"Token is not avaible"})
+export const IsAuthentication = async (req, res, next) => {
+    try {
+        // Get token from different possible sources
+        const token = req.headers.authorization?.split(' ')[1] || 
+                     req.cookies?.token ||
+                     req.header('x-auth-token');
+
+        if (!token) {
+            return res.status(401).json({ 
+                success: false, 
+                message: "Access denied. No token provided." 
+            });
+        }
+
+        // Verify token
+        const secretKey = process.env.JWT_SECRET;
+        if (!secretKey) {
+            throw new Error('JWT_SECRET is not defined in environment variables');
+        }
+
+        const decoded = jwt.verify(token, secretKey);
+        
+        // Attach user info to request object
+        req.user = decoded;
+        
+        next();
+    } catch (error) {
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid token"
+            });
+        } else if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                message: "Token has expired"
+            });
+        }
+        
+        return res.status(500).json({
+            success: false,
+            message: "Server error during authentication",
+            error: error.message
+        });
     }
-    try{
-        const SecretKey = process.env.JWT_SECRET
-        const decode = await jwt.verify("token" , SecretKey)
-        req.user = decode
-        next()
-    }catch(error){
-        console.log(error)
-    }
-    
-}
+};

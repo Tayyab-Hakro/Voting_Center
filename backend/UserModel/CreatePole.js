@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 
 const PollingSchema = new mongoose.Schema({
     Title:{
-        type:"String",
+        type:String,
         required:true
     },
     Option1:{
-        type:"String",
+        type:String,
         required:true
-    }, Option1:{
-        type:"String",
+    }, Option2:{
+        type:String,
         required:true
     }, Option3 :{
         type:String,
